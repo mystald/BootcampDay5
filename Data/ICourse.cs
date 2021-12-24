@@ -6,6 +6,5 @@ namespace BootcampDay5.Data
 {
     public interface ICourse : ICrud<Course>
     {
-        Task<IEnumerable<Course>> GetByAuthorID(int id);
     }
 }
