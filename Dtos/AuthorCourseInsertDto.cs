@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace BootcampDay5.Dtos
 {
@@ -16,11 +17,8 @@ namespace BootcampDay5.Dtos
         [Required, StringLength(50)]
         public string MainCategory { get; set; }
 
-        [Required, StringLength(100)]
-        public string Title { get; set; }
-
-        [StringLength(1500)]
-        public string Description { get; set; }
+        [Required]
+        public IEnumerable<CourseWithoutAuthorIdDto> Courses { get; set; }
 
     }
 }

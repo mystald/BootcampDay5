@@ -111,18 +111,20 @@ namespace BootcampDay5.Data
             }
         }
 
-        public async Task<(Author, Course)> InsertAuthorWithCourse(Author author, Course course)
+        public async Task<(Author, IEnumerable<Course>)> InsertAuthorWithCourse(Author author, IEnumerable<Course> courses)
         {
             try
             {
                 author = await Insert(author);
 
-                course.AuthorID = author.AuthorID;
+                foreach (var course in courses) {
+                    course.AuthorID = author.AuthorID;
 
-                await _db.Courses.AddAsync(course);
-                await _db.SaveChangesAsync();
+                    await _db.Courses.AddAsync(course);
+                    await _db.SaveChangesAsync();
+                }
 
-                return (author, course);
+                return (author, courses);
             }
             catch (DbUpdateException ex)
             {

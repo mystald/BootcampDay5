@@ -84,9 +84,27 @@ namespace BootcampDay5.Controllers
         {
             try
             {
-                var (author,course) = await _author.InsertAuthorWithCourse(_mapper.Map<Author>(value), _mapper.Map<Course>(value));
+                var newAuthor = new Author
+                {
+                    FirstName = value.FirstName,
+                    LastName = value.LastName,
+                    DateOfBirth = (System.DateTime)value.DateOfBirth,
+                    MainCategory = value.MainCategory,
+                };
 
-                return Ok((_mapper.Map<AuthorDto>(author), _mapper.Map<CourseDto>(course)));
+                List<Course> newCourses = new List<Course>();
+                foreach (var course in value.Courses)
+                {
+                    newCourses.Add(new Course
+                    {
+                        Title = course.Title,
+                        Description = course.Description,
+                    });
+                }
+
+                var (author,courses) = await _author.InsertAuthorWithCourse(newAuthor, newCourses);
+
+                return Ok((_mapper.Map<AuthorDto>(author), _mapper.Map<IEnumerable<CourseDto>>(courses)));
             }
             catch (System.Exception ex)
             {
