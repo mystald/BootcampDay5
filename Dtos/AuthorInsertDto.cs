@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BootcampDay5.ValidationAttributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace BootcampDay5.Dtos
 {
+    [AuthorFirstLastNameValidation]
     public class AuthorInsertDto
     {
         [Required, StringLength(50)]
