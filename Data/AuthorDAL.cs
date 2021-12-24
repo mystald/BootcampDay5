@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using BootcampDay5.Dtos;
 
 namespace BootcampDay5.Data
 {
@@ -18,7 +19,7 @@ namespace BootcampDay5.Data
         public async Task<IEnumerable<Author>> GetAll()
         {
             var result = await (
-                from author in _db.Authors
+                from author in _db.Authors.Include("Courses")
                 select author).ToListAsync();
 
             return result;
@@ -64,8 +65,6 @@ namespace BootcampDay5.Data
                 var result = await _db.Authors.AddAsync(obj);
                 await _db.SaveChangesAsync();
 
-                System.Console.WriteLine(result);
-
                 return obj;
             }
             catch (DbUpdateException ex)
@@ -105,6 +104,25 @@ namespace BootcampDay5.Data
                 await _db.SaveChangesAsync();
 
                 return oldAuthor;
+            }
+            catch (DbUpdateException ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<(Author, Course)> InsertAuthorWithCourse(Author author, Course course)
+        {
+            try
+            {
+                author = await Insert(author);
+
+                course.AuthorID = author.AuthorID;
+
+                await _db.Courses.AddAsync(course);
+                await _db.SaveChangesAsync();
+
+                return (author, course);
             }
             catch (DbUpdateException ex)
             {

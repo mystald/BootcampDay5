@@ -25,7 +25,7 @@ namespace BootcampDay5.Controllers
         
         // GET: api/<AuthorController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AuthorDto>>> Get(string name)
+        public async Task<ActionResult<IEnumerable<AuthorDto>>> Get(string name/*, bool withCourse=false*/)
         {
             IEnumerable<Author> result;
 
@@ -37,6 +37,11 @@ namespace BootcampDay5.Controllers
             {
                 result = await _author.GetByName(name);
             }
+
+            /*if (withCourse)
+            {
+                return Ok(_mapper.Map<IEnumerable<AuthorWithCourseDto>>(result));
+            }*/
 
             return Ok(_mapper.Map<IEnumerable<AuthorDto>>(result));
         }
@@ -67,6 +72,21 @@ namespace BootcampDay5.Controllers
                 var result = await _author.Insert(_mapper.Map<Author>(value));
 
                 return Ok(_mapper.Map<AuthorDto>(result));
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("Course")]
+        public async Task<ActionResult<AuthorDto>> PostWithCourse([FromBody] AuthorCourseInsertDto value)
+        {
+            try
+            {
+                var (author,course) = await _author.InsertAuthorWithCourse(_mapper.Map<Author>(value), _mapper.Map<Course>(value));
+
+                return Ok((_mapper.Map<AuthorDto>(author), _mapper.Map<CourseDto>(course)));
             }
             catch (System.Exception ex)
             {

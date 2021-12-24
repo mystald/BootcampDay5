@@ -9,6 +9,7 @@ namespace BootcampDay5.Profiles
             CreateMap<Models.Course, Dtos.CourseDto>();
 
             CreateMap<Dtos.CourseInsertDto, Models.Course>();
+
         }
     }
 }
