@@ -46,16 +46,6 @@ namespace BootcampDay5.Data
             return result;
         }
 
-        public async Task<IEnumerable<Course>> GetByAuthorID(int id)
-        {
-            var result = await (
-                from course in _db.Courses
-                where course.AuthorID == id
-                select course).ToListAsync();
-
-            return result;
-        }
-
         public async Task<Course> Insert(Course obj)
         {
             try
