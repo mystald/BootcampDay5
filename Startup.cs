@@ -32,7 +32,15 @@ namespace BootcampDay5
                 options.UseSqlServer(Configuration.GetConnectionString("Azure"))
             );
 
-            services.AddControllers();
+            services.AddScoped<IAuthor, AuthorDAL>();
+
+            services.AddControllers().AddNewtonsoftJson(x =>
+            x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddControllers().AddXmlDataContractSerializerFormatters();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BootcampDay5", Version = "v1" });
