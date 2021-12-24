@@ -105,5 +105,20 @@ namespace BootcampDay5.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("{id}/Course")]
+        public async Task<ActionResult<IEnumerable<CourseDto>>> GetCoursesByAuthor(int id)
+        {
+            try
+            {
+                var result = await _author.GetCourses(id);
+
+                return Ok(_mapper.Map<IEnumerable<CourseDto>>(result));
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

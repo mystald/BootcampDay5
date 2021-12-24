@@ -47,9 +47,14 @@ namespace BootcampDay5.Data
             return result;
         }
 
-        public Task<IEnumerable<Course>> GetCourses(int id)
+        public async Task<IEnumerable<Course>> GetCourses(int id)
         {
-            throw new System.NotImplementedException();
+            var result = await (
+                from course in _db.Courses
+                where course.AuthorID == id
+                select course).ToListAsync();
+
+            return result;
         }
 
         public async Task<Author> Insert(Author obj)

@@ -34,6 +34,8 @@ namespace BootcampDay5
 
             services.AddScoped<IAuthor, AuthorDAL>();
 
+            services.AddScoped<ICourse, CourseDAL>();
+
             services.AddControllers().AddNewtonsoftJson(x =>
             x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
